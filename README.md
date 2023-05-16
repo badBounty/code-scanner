@@ -14,4 +14,7 @@ Mas informacion en:
 ./code-scanner.sh --path /path/to/local/repo --name "repoName" --tech "tech"
 
 ## TODO
-- 
+- output predeterminado
+- scans por tecnologia utilizada
+- integracion con SonarQube (resultados solo se ven en la GUI de SonarQube)
+- eliminacion de codigo fuente una vez analizado (para que no mate el espacio)

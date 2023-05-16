@@ -25,7 +25,7 @@ echo "Running docker..."
 docker run --rm -v $PATH_TO_REPO:/src -v $PATH_TO_REPO/../results:/results returntocorp/semgrep semgrep \
 	--config=auto --output /results/$REPO_NAME-semgrep.json --json
 echo "Uploading results to DefectDojo..."
-python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-semgrep.json" --scanner "Semgrep JSON Report"
+python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-semgrep.json" --scanner "Semgrep JSON Report"
 
 echo "----------------------------------"
 
@@ -33,7 +33,7 @@ echo "Trufflehog Scan:"
 echo "Running docker..."
 docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_REPO/../results:/results trufflesecurity/trufflehog \
     filesystem -j /src | tail -n +1 | > $PATH_TO_REPO/../results/$REPO_NAME-trufflehog.json
-python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-trufflehog.json" --scanner "Trufflehog Scan"
+python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-trufflehog.json" --scanner "Trufflehog Scan"
 
 
 echo "----------------------------------"
@@ -56,7 +56,7 @@ cd $PATH_TO_REPO && npm install
 echo "Running docker..."
 docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_REPO/../results:/results retire \
 	--path /src --outputformat json --outputpath /results/$REPO_NAME-retirejs.json
-python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-retirejs.json" --scanner "Retire.js Scan"
+python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/$REPO_NAME-retirejs.json" --scanner "Retire.js Scan"
 echo "----------------------------------"
 
 echo "DependencyCheck Scan:"
@@ -72,5 +72,5 @@ docker run --rm \
     --format "XML" \
     --project "$REPO_NAME" \
     --out /results
-python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/dependency-check-report.xml" --scanner "Dependency Check Scan"
+python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id 5 --product_id 1 --lead_id 1 --environment "Production" --result_file "$PATH_TO_REPO/../results/dependency-check-report.xml" --scanner "Dependency Check Scan"
 

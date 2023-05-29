@@ -15,11 +15,13 @@ Primero que nada se deberan modificar las variables de entorno de code-scanner.s
 
 Este script se encargara de buildear las imagenes necesarias para la utilizacion de esta herramienta. Nos devolvera la contraseña de admin de defect-dojo:
 
-``` ./setup.sh
+```
+./setup.sh
 ```
 
 
-```./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
+```
+./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
 ```
 
 ## TODO

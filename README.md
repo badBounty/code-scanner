@@ -11,13 +11,12 @@ Mas informacion en:
 
 
 ## Quick start
-./code-scanner.sh --path /path/to/local/repo --name "repoName" --tech "tech"
+./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
 
 ## TODO
-- output predeterminado
-- scans por tecnologia utilizada
+- scans por tecnologia utilizada (working)
 - integracion con SonarQube (resultados solo se ven en la GUI de SonarQube)
-- eliminacion de codigo fuente una vez analizado (para que no mate el espacio)
+- crear un start.sh que deje activos los contenedores de dojo y sonarqube para poder scanear
 
 ## Bugs/Not-working
 - Trufflehog -> no muestra findings en defectdojo

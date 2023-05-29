@@ -11,6 +11,8 @@ Mas informacion en:
 
 
 ## Quick start
+Primero que nada se deberan modificar las variables de entorno de code-scanner.sh (api key de dojo, sonarqube, puertos usados etc)
+./setup.sh
 ./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
 
 ## TODO

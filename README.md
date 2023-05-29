@@ -12,8 +12,15 @@ Mas informacion en:
 
 ## Quick start
 Primero que nada se deberan modificar las variables de entorno de code-scanner.sh (api key de dojo, sonarqube, puertos usados etc)
-./setup.sh
-./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
+
+Este script se encargara de buildear las imagenes necesarias para la utilizacion de esta herramienta. Nos devolvera la contraseña de admin de defect-dojo:
+
+``` ./setup.sh
+```
+
+
+```./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
+```
 
 ## TODO
 - scans por tecnologia utilizada (working)

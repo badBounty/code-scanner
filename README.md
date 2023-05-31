@@ -1,6 +1,12 @@
 # code-scanner
 Code-scanner consta de una serie de contenedores en docker que se ejecutan de manera secuencial para el analisis de codigo fuente localmente. Una vez finalizado cada scan, su correspondiente output sera enviado a "DefectDojo".
 
+Tecnologias soportadas:
+- nodejs
+- dotnet
+- java 
+- php
+
 ## DefectDojo
 DefectDojo es un projecto open-source el cual nos permite visualizar de una manera ordenada los findings en los diferentes repositorios que se scaneen.
 Este servicio debera encontrarse en ejecucion antes de realizar cualquier scan.
@@ -11,14 +17,14 @@ Mas informacion en:
 
 
 ## Quick start
-Primero que nada se deberan modificar las variables de entorno de code-scanner.sh (api key de dojo, sonarqube, puertos usados etc)
-
-Este script se encargara de buildear las imagenes necesarias para la utilizacion de esta herramienta. Nos devolvera la contraseña de admin de defect-dojo:
+Este script se encargara de buildear las imagenes necesarias para la utilizacion de esta herramienta. 
+Nos devolvera la contraseña de admin de defect-dojo:
 
 ```
 ./setup.sh
 ```
-
+Primero que nada se deberan modificar las variables de entorno de code-scanner.sh (api key de dojo, sonarqube, puertos usados etc)
+Luego:
 
 ```
 ./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
@@ -27,7 +33,7 @@ Este script se encargara de buildear las imagenes necesarias para la utilizacion
 ## TODO
 - scans por tecnologia utilizada (working)
 - integracion con SonarQube (resultados solo se ven en la GUI de SonarQube)
-- crear un start.sh que deje activos los contenedores de dojo y sonarqube para poder scanear
+- crear un start.sh que deje activos los contenedores de dojo y sonarqube para poder scanear (first release, need to be tested)
 
 ## Bugs/Not-working
 - Trufflehog -> no muestra findings en defectdojo

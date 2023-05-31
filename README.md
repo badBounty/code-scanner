@@ -30,6 +30,16 @@ Luego:
 ./code-scanner.sh -t <tech> -s /path/to/local/repo -o /path/to/results -e <engagement>
 ```
 
+## STEPS
+(Gran parte se hace de manera automatica, pero ante fallas...)
+- Descarga de imagenes de herramientas y/o buildeado
+- Configurar defect-dojo
+- SonarQube debe estar funcionandoo (ya que se ejecuta desde consola pero con el servicio levantado)
+- configurar constantes en code-scanner file
+- Clonar repo a analizar
+- Utilizar code scan indicando los parametros necesarios
+- Ver resultados en defect-dojo
+
 ## TODO
 - scans por tecnologia utilizada (working)
 - integracion con SonarQube (resultados solo se ven en la GUI de SonarQube)

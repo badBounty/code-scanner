@@ -47,3 +47,4 @@ Luego:
 
 ## Bugs/Not-working
 - Trufflehog -> no muestra findings en defectdojo
+- Aca otro error, el setup.sh no funciona

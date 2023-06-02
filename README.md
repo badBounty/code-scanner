@@ -48,3 +48,4 @@ Luego:
 ## Bugs/Not-working
 - Trufflehog -> no muestra findings en defectdojo
 - Aca otro error, el setup.sh no funciona
+- si el sonarqube no levanta, probar con esto: sysctl -w vm.max_map_count=262144 (se debe tirar en cada reboot del sistema)

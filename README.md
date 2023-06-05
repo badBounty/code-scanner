@@ -11,10 +11,11 @@ Actualmente este script utiliza las siguientes tools para el análisis de reposi
 - trivy *
 
 Por tecnologia:
+
 nodejs:
--njsscan
--bearer
--npm audit
+- njsscan
+- bearer
+- npm audit
 
 dotnet: *
 - puma

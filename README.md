@@ -8,7 +8,7 @@ Actualmente este script utiliza las siguientes tools para el análisis de reposi
 - SonarQube
 - RetireJS
 - DependencyCheck
-- trivy *
+- trivy
 
 Por tecnologia:
 
@@ -17,22 +17,22 @@ nodejs:
 - bearer
 - npm audit
 
-dotnet: *
+dotnet: 
 - puma
 - security code scan
 - PVS-Studio
 
-java: *
+java: 
 - findsecbugs
 
-php: *
+php: 
 - PHPStan
 - enlightn
 - composer
 - ASST
 - phpcs-security-audit
 
-('*'  No implementados hasta el momento)
+
 
 ## DefectDojo
 DefectDojo es un projecto open-source el cual nos permite visualizar de una manera ordenada los findings en los diferentes repositorios que se scanneen.

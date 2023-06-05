@@ -77,15 +77,22 @@ docker run --rm \
     --out /results
 python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/dependency-check-report.xml" --scanner "Dependency Check Scan"
 
+echo "----------------------------------"
+
 if [[ $REPO_TECH == "nodejs" ]]; then
 
+    echo "Nodejs Scan:"
     docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results opensecurity/njsscan /src --sonarqube -o /results/$REPO_NAME-nodejs --missing-controls
-    
+    echo "----------------------------------"
+
+    echo "npmAudit Scan:"
     cd $PATH_TO_REPO && npm audit --json > $PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json
     python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json" --scanner "NPM Audit Scan"
+    echo "----------------------------------"
 
+    echo "Bearer Scan:"
     docker run --rm -v $PATH_TO_REPO:/tmp/scan -v $PATH_TO_OUTPUT:/results bearer/bearer:latest-amd64 scan /tmp/scan -f json --output /results/$REPO_NAME-bearer.json
-
+    echo "----------------------------------"
 else
     echo "error"
 fi

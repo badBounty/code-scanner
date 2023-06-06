@@ -77,5 +77,14 @@ Mientras el setup.sh no se encuentre operacional, por el momento debemos:
 ## Bugs/Not-working
 - Trufflehog -> no muestra findings en defectdojo
 - Setup.sh no funciona (revisar steps)
-- si el sonarqube no levanta, probar con esto: sysctl -w vm.max_map_count=262144 (se debe tirar en cada reboot del sistema)
+- si el sonarqube no levanta, probar con esto: 
+
+```
+sysctl -w vm.max_map_count=524288
+sysctl -w fs.file-max=131072
+ulimit -n 131072
+ulimit -u 8192
+```
+
 - Algunos output no se estan subiendo a defectdojo
+    - Defect-dojo con NPMAudit no soporta auditReportVersion 2

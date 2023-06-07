@@ -75,7 +75,7 @@ Mientras el setup.sh no se encuentre operacional, por el momento debemos:
 - integracion con SonarQube (resultados solo se ven en la GUI de SonarQube)
 
 ## Bugs/Not-working
-- Trufflehog -> no muestra findings en defectdojo
+- Trufflehog -> no muestra findings en defectdojo a pesar de que se suben
 - Setup.sh no funciona (revisar steps)
 - si el sonarqube no levanta, probar con esto: 
 

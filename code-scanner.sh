@@ -25,17 +25,22 @@ echo "----------------------------------"
 
 echo "Semgrep Scan:"
 echo "Running docker..."
+
 docker run --rm -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results returntocorp/semgrep semgrep \
 	--config=auto --output /results/$REPO_NAME-semgrep.json --json
+
 echo "Uploading results to DefectDojo..."
+
 python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-semgrep.json" --scanner "Semgrep JSON Report"
 
 echo "----------------------------------"
  
 echo "Trufflehog Scan:"
 echo "Running docker..."
-docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results trufflesecurity/trufflehog \
-    filesystem -j /src | tail -n +1 > $PATH_TO_OUTPUT/$REPO_NAME-trufflehog.json
+
+docker run --rm -it -v $PATH_TO_REPO:/src trufflesecurity/trufflehog \
+    filesystem -j /src > $PATH_TO_OUTPUT/$REPO_NAME-trufflehog.json
+
 python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-trufflehog.json" --scanner "Trufflehog Scan"
 
 
@@ -43,6 +48,7 @@ echo "----------------------------------"
 
 echo "SonarQube Scan:"
 echo "Running docker..."
+
 docker run  --network=host \
     --rm \
     -e SONAR_HOST_URL="http://localhost:9000" \
@@ -55,15 +61,20 @@ echo "----------------------------------"
 
 echo "RetireJS Scan:"
 echo "NPM install:"
+
 cd $PATH_TO_REPO && npm install
 echo "Running docker..."
+
 docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results retire \
 	--path /src --outputformat json --outputpath /results/$REPO_NAME-retirejs.json
+
 python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-retirejs.json" --scanner "Retire.js Scan"
+
 echo "----------------------------------"
 
 echo "DependencyCheck Scan:"
 echo "Running docker..."
+
 docker run --rm \
     -e user=$USER \
     -u $(id -u ${USER}):$(id -g ${USER}) \
@@ -74,15 +85,19 @@ docker run --rm \
     --scan /src \
     --format "XML" \
     --project "$REPO_NAME" \
-    --out /results
-python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/dependency-check-report.xml" --scanner "Dependency Check Scan"
+    --out /results/$REPO_NAME-dependency-check-report.xml
+
+python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-dependency-check-report.xml" --scanner "Dependency Check Scan"
 
 echo "----------------------------------"
 
 if [[ $REPO_TECH == "nodejs" ]]; then
 
     echo "Nodejs Scan:"
-    docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results opensecurity/njsscan /src --sonarqube -o /results/$REPO_NAME-nodejs --missing-controls
+    echo "Running docker..."
+
+    docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results opensecurity/njsscan /src --sarif -o /results/$REPO_NAME-nodejs --missing-controls
+
     echo "----------------------------------"
 
     echo "npmAudit Scan:"

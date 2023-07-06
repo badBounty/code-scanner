@@ -110,38 +110,39 @@ if [[ $REPO_TECH == "nodejs" ]]; then
 
     echo "Nodejs Scan:"
     echo "Running docker..."
-
     docker run --rm -it -v $PATH_TO_REPO:/src -v $PATH_TO_OUTPUT:/results opensecurity/njsscan /src --sarif -o /results/$REPO_NAME-nodejs --missing-controls
+
+    echo "Uploading results to DefectDojo..."
+    python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-nodejs" --scanner "SARIF"
 
     echo "----------------------------------"
 
     echo "npmAudit Scan:"
-    cd $PATH_TO_REPO && npm audit --json #> $PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json
+    cd $PATH_TO_REPO && npm audit --json > $PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json
 
-    #echo "Uploading results to DefectDojo..."
-
-    #python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json" --scanner "NPM Audit Scan"
+    echo "Uploading results to DefectDojo..."
+    python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-npmAudit.json" --scanner "NPM Audit Scan"
+    
     echo "----------------------------------"
 
     echo "Bearer Scan:"
-    docker run --rm -v $PATH_TO_REPO:/tmp/scan -v $PATH_TO_OUTPUT:/results bearer/bearer:latest-amd64 scan /tmp/scan -f json --output /results/$REPO_NAME-bearer.json
+    docker run --rm -v $PATH_TO_REPO:/tmp/scan bearer/bearer:latest-amd64 scan -f sarif /tmp/scan > "$PATH_TO_OUTPUT/$REPO_NAME-bearerjs"
+
+    echo "Uploading results to DefectDojo..."
+    python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-bearerjs" --scanner "SARIF"
+    
     echo "----------------------------------"
-else
-    echo "error"
 fi
-: '    if [[ $REPO_TECH == "dotnet" ]]; then
 
+if [[ $REPO_TECH == "php" ]]; then
 
-    else
-        if [[ $REPO_TECH == "java" ]]; then
+    echo "php-security-audit Scan:"
+    echo "Running docker..."
+    docker run --rm -it -v $PATH_TO_REPO:/src  e804266d48cb /analyzer analyze /src > $PATH_TO_OUTPUT/$REPO_NAME-phpsec.json
 
-        else
-            if [[ $REPO_TECH == "php" ]]; then
+    #removemos las primeras 2 lineas del json (no nos sirven)
+    tail -n +3 $PATH_TO_OUTPUT/$REPO_NAME-phpsec.json > $PATH_TO_OUTPUT/tmp.json && mv $PATH_TO_OUTPUT/tmp.json $PATH_TO_OUTPUT/$REPO_NAME-phpsec.json
 
-            else 
-                exit 1;
-            fi
-        fi
-    fi
+    echo "Uploading results to DefectDojo..."
+    python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-phpsec.json" --scanner "PHP Security Audit v2"
 fi
-'

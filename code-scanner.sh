@@ -158,7 +158,7 @@ if [[ $REPO_TECH == "php" ]]; then
 fi
 
 echo "Sending notification to $NOTIF_NUMBER"
-#curl -Ik "https://api.callmebot.com/whatsapp.php?phone=$NOTIF_NUMBER&text=Code+scanner+for+$REPO_TO_SCAN_NAME+finished&apikey=$NOTIF_TOKEN"
+#curl -Ik "https://api.callmebot.com/whatsapp.php?phone=$NOTIF_NUMBER&text=Code+scanner+for+$REPO_NAME+finished&apikey=$NOTIF_TOKEN"
 
 echo "${RED}Outdated libraries, please perform triage:"
 cat $PATH_TO_OUTPUT/$REPO_NAME-dependency-check.json

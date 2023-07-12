@@ -21,6 +21,9 @@ REPO_NAME=$(basename "$PATH_TO_REPO")
 # To allow whatsapp notifications uncomment curl notification at the end of this script. Your number must be registered below.
 NOTIF_NUMBER= #whatsapp number
 NOTIF_TOKEN= #https://www.callmebot.com/blog/free-api-whatsapp-messages/
+
+PATH_TO_DEP_PARSER= #path to dependency-check parser
+
 echo "This will scan your local repository on $PATH_TO_REPO, with name output in $PATH_TO_OUTPUT for $REPO_NAME"
 
 echo "----------------------------------"
@@ -102,9 +105,11 @@ docker run --rm \
     --project "$REPO_NAME" \
     --out /results/$REPO_NAME-dependency-check-report.xml
 
-echo "Uploading results to DefectDojo..."
+python3 $PATH_TO_DEP_PARSER $PATH_TO_OUTPUT/$REPO_NAME-dependency-check-report.csv $PATH_TO_OUTPUT/$REPO_NAME-dependency-check.json
+echo "Check results in $PATH_TO_OUTPUT/$REPO_NAME-dependency-check.json"
 
-python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-dependency-check-report.xml" --scanner "Dependency Check Scan"
+#echo "Uploading results to DefectDojo..."
+#python3 $DOJO_PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-dependency-check-report.xml" --scanner "Dependency Check Scan"
 
 echo "----------------------------------"
 
@@ -148,6 +153,7 @@ if [[ $REPO_TECH == "php" ]]; then
     echo "Uploading results to DefectDojo..."
     python3 $PATH_TO_UPLOADER --host "127.0.0.1:8080" --api_key $DOJO_API_KEY --engagement_id $DOJO_ENG --product_id $DOJO_PRODUCT_ID --lead_id 1 --environment "Production" --result_file "$PATH_TO_OUTPUT/$REPO_NAME-phpsec.json" --scanner "PHP Security Audit v2"
 fi
+
 echo "Sending notification to $NOTIF_NUMBER"
-#curl "-Ik 'https://api.callmebot.com/whatsapp.php?phone=$NOTIF_NUMBER&text=Code+scanner+for+$REPO_TO_SCAN_NAME+finished&apikey=$NOTIF_TOKEN'"
+#curl -Ik "https://api.callmebot.com/whatsapp.php?phone=$NOTIF_NUMBER&text=Code+scanner+for+$REPO_TO_SCAN_NAME+finished&apikey=$NOTIF_TOKEN"
 echo -e "\033[0;32mCode scanner finished"

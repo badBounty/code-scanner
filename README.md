@@ -88,3 +88,6 @@ ulimit -u 8192
 
 - Algunos output no se estan subiendo a defectdojo
     - Defect-dojo con NPMAudit no soporta auditReportVersion 2
+
+## Comentarios
+- Dependency check debe revisarse en resultados (array con las librerias afectadas)

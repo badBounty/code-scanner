@@ -24,7 +24,10 @@ NOTIF_TOKEN= #https://www.callmebot.com/blog/free-api-whatsapp-messages/
 
 PATH_TO_DEP_PARSER= #path to dependency-check parser
 
-echo "This will scan your local repository on $PATH_TO_REPO, with name output in $PATH_TO_OUTPUT for $REPO_NAME"
+#Colours
+GREEN_BLINK='\033[5;32m'
+NO_COLOUR='\033[0m'
+echo -e "This will scan your local repository on ${GREEN_BLINK}$PATH_TO_REPO${NO_COLOUR}, with name output in ${GREEN_BLINK}$PATH_TO_OUTPUT${NO_COLOUR} for ${GREEN_BLINK}$REPO_NAME${NO_COLOUR}"
 
 echo "----------------------------------"
 
@@ -156,4 +159,7 @@ fi
 
 echo "Sending notification to $NOTIF_NUMBER"
 #curl -Ik "https://api.callmebot.com/whatsapp.php?phone=$NOTIF_NUMBER&text=Code+scanner+for+$REPO_TO_SCAN_NAME+finished&apikey=$NOTIF_TOKEN"
-echo -e "\033[0;32mCode scanner finished"
+
+echo "${RED}Outdated libraries, please perform triage:"
+cat $PATH_TO_OUTPUT/$REPO_NAME-dependency-check.json
+echo -e "\n${GREEN_BLINK}Code scanner finished"

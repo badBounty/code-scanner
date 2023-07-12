@@ -1,6 +1,7 @@
 #! /bin/bash
 
 docker build .
+
 docker-compose up -d
 
 dotnet tool install --global security-scan --version 5.6.7
